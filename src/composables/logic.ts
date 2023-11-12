@@ -21,6 +21,7 @@ interface GameState {
   status: GameStatus
   startMS?: number
   endMS?: number
+  mines: number
 }
 
 export class GamePlay {
@@ -30,9 +31,9 @@ export class GamePlay {
   constructor(
     public width: number,
     public height: number,
-    public mines: number,
+    mines: number,
   ) {
-    this.reset()
+    this.reset(this.width, this.height, mines)
   }
 
   get board() {
@@ -46,11 +47,10 @@ export class GamePlay {
   reset(
     width = this.width,
     height = this.height,
-    mines = this.mines,
+    mines: number = this.state.value.mines,
   ) {
     this.width = width
     this.height = height
-    this.mines = mines
 
     this.state.value = {
       mineGenerated: false,
@@ -65,6 +65,7 @@ export class GamePlay {
           }),
         ),
       ),
+      mines,
     }
   }
 
@@ -88,7 +89,7 @@ export class GamePlay {
       block.mine = true
       return true
     }
-    Array.from({ length: this.mines }, () => null)
+    Array.from({ length: this.state.value.mines }, () => null)
       .forEach(() => {
         let placed = false
         while (!placed)
@@ -220,3 +221,4 @@ export class GamePlay {
     }
   }
 }
+

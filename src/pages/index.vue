@@ -12,8 +12,8 @@ const state = $computed(() => play.board)
 
 const mineRest = $computed(() => {
   if (!play.state.value.mineGenerated)
-    return play.mines
-  return play.blocks.reduce((a, b) => a - (b.flagged ? 1 : 0), play.mines)
+    return play.state.value.mines
+  return play.blocks.reduce((a, b) => a - (b.flagged ? 1 : 0), play.state.value.mines)
 })
 
 function newGame(difficulty: 'easy' | 'medium' | 'hard') {
@@ -67,17 +67,17 @@ watchEffect(() => {
 
     <div p5 w-full overflow-auto>
       <div
-        v-for="row, y in state"
-        :key="y"
-        flex="~"
-        items-center justify-center w-max ma
+          v-for="row, y in state"
+          :key="y"
+          flex="~"
+          items-center justify-center w-max ma
       >
         <MineBlock
-          v-for="block, x in row" :key="x"
-          :block="block"
-          @click="play.onClick(block)"
-          @lrclick="play.autoExpand(block)"
-          @contextmenu.prevent="play.onRightClick(block)"
+            v-for="block, x in row" :key="x"
+            :block="block"
+            @click="play.onClick(block)"
+            @lrclick="play.autoExpand(block)"
+            @contextmenu.prevent="play.onRightClick(block)"
         />
       </div>
     </div>
